@@ -53,7 +53,7 @@ specify `vpc_id` parameter.
 | vpc_id  | Specifying existing VPC ID  | string  | `""`  | no  |
 | name  | The name of the VPC  | string  | `""`  | no  |
 | cidr  | The CIDR of the VPC  | string  | `""`  | no  |
-| subnets  | List of subnets in the VPC  | `list(map(string))`  | `[]`  | no  |
+| subnets  | List of subnets in the VPC  | list(map(string))  | `[]`  | no  |
 
 
 ## Outputs
