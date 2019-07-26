@@ -27,7 +27,7 @@ module "example" {
       name       = "testSubnet-2"
       cidr       = "10.0.2.0/24"
       gateway_ip = "10.0.2.1"
-      availability_zone = "cn-north-1"
+      availability_zone = "cn-north-1a"
     },
     {
       name       = "tetSubnet-3"
