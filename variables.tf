@@ -14,7 +14,13 @@ variable "cidr" {
 }
 
 variable "subnets" {
-  type = list(map(string))
   description = "List of subnets in the VPC"
-  default     = []
+  type = list(object({
+    name          = string
+    cidr          = string
+    gateway_ip    = string
+    primary_dns   = string
+    secondary_dns = string
+  }))
+  default = []
 }
