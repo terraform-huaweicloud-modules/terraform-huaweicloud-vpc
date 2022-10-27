@@ -1,1 +1,24 @@
-.terraform
+# Terraform lock file
+.terraform.lock.hcl
+
+# Terraform state files
+.tfstate
+.tfstate.*
+
+# Crash log file
+crash.log
+
+# Exclude all .tfvars files (contains auto.tfvars file), which are likely to contain sentitive data, such as password,
+# AK/SK, and other secrets. These should not be part of version control as they are data points which are potentially
+# sensitive and subject to change depending on the environment.
+*.tfvars
+
+# Ignore override files are they are usually used to override resources locally and so are not checked in.
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Ignore CLI configuration files
+.terraformrc
+.terraform.rc
