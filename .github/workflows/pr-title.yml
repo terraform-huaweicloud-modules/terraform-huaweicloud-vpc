@@ -26,10 +26,22 @@ jobs:
             docs
             ci
             chore
+            refactor
+            test
+            style
           # Configure that a scope must always be provided.
-          requireScope: false
+          requireScope: true
           # Configure additional validation for the subject based on a regex.
           # This example ensures the subject starts with an uppercase character.
+          scopes: |
+            core
+            example
+            script
+            gatekeeper
+            document
+            json
+            gitignore
+          # Configure that a scope must always be provided.
           subjectPattern: ^[A-Z].+$
           # If `subjectPattern` is configured, you can use this property to override
           # the default error message that is shown when the pattern doesn't match.
