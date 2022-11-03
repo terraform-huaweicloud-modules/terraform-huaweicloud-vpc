@@ -1,73 +1,71 @@
-# Huawei Cloud VPC Terraform Module
+# The Terraform module of HUAWEI Cloud VPC service
 
-Terraform moudle which create VPC resource on Huawei Cloud.
-
-These types of resources are supported:
-
-* [VPC](https://www.terraform.io/docs/providers/huaweicloud/r/vpc_v1.html)
-* [VPC Subnet](https://www.terraform.io/docs/providers/huaweicloud/r/vpc_subnet_v1.html)
+The terraform module for one-click deployment of VPC and related resources.
 
 ## Usage
 
 ```hcl
-module "example" {
-  source = "terraform-huaweicloud-modules/vpc/huaweicloud"
+module "vpc_service" {
+  source = "terraform-huaweicloud-modules/vpc-service"
 
-  // VPC
-  name = "testVPC"
-  cidr = "10.0.0.0/16"
+  vpc_name       = "module-single-vpc"
+  vpc_cidr_block = "172.16.0.0/16"
 
-  // Subnet
-  subnets = [
-    {
-      name       = "testSubnet-1"
-      cidr       = "10.0.1.0/24"
-      gateway_ip = "10.0.1.1"
-    },
-    {
-      name       = "testSubnet-2"
-      cidr       = "10.0.2.0/24"
-      gateway_ip = "10.0.2.1"
-      availability_zone = "ap-southeast-1a"
-    },
-    {
-      name       = "tetSubnet-3"
-      cidr       = "10.0.3.0/24"
-      gateway_ip = "10.0.3.1"
-      primary_dns = "100.125.1.250"
-      secondary_dns = "100.125.3.250"
-    },
+  subnet_configuration = [
+    {name="module-single-master-subnet", cidr="172.16.66.0/24"},
+    {name="module-single-standby-subnet", cidr="172.16.86.0/24"},
   ]
+
+  is_security_group_create = false
 }
 ```
 
-## Conditional creation
+## Contributing
 
-This module can create both VPC and VPC subnet, it is possible to use existing VPC only if you
-specify `vpc_id` parameter.
+Report issues/questions/feature requests in the [issues](https://github.com/terraform-huaweicloud-modules/terraform-huaweicloud-vpc/issues/new)
+section.
+
+Full contributing [guidelines are covered here](.github/how_to_contribute.md).
+
+## Requirements
+
+| Name | Version |
+|------|---------|
+| Terraform | >= 1.3.0 |
+| Huaweicloud Provider | >= 1.40.0 |
+
+## Resources
+
+| Name | Type |
+|------|------|
+| huaweicloud_vpc.this | resource |
+| huaweicloud_vpc_subnet.this | resource |
+| huaweicloud_networking_secgroup.this | resource |
+| huaweicloud_networking_secgroup_rule.in_v4_self_group | resource |
+| huaweicloud_networking_secgroup_rule.this | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|:----:|:-----:|:-----:|
-| vpc_id  | Specifying existing VPC ID  | string  | `""`  | no  |
-| name  | The name of the VPC  | string  | `""`  | no  |
-| cidr  | The CIDR of the VPC  | string  | `""`  | no  |
-| subnets  | List of subnets in the VPC  | list(map(string))  | `[]`  | no  |
-
+|------|-------------|------|---------|----------|
+| enterprise_project_id | Used to specify whether the resource is created under the enterprise project (this parameter is only valid for enterprise users) | string | null | N |
+| name_suffix | The suffix string of name for all Network resources | string | "" | N |
+| is_vpc_create | Controls whether a VPC should be created (it affects all VPC related resources under this module) | bool | true | N |
+| vpc_name | The name of the VPC resource | string | "" | N |
+| vpc_cidr_block | The CIDR block of the VPC resource | string | "192.168.0.0/16" | N |
+| subnets_configuration | The configuration for the subnet resources to which the VPC belongs | list(object) | <pre>[<br>  {<br>    name = "module-default-subnet",<br>    cidr = "192.168.16.0/20",<br>  },<br>]</pre> | N |
+| is_security_group_create | Controls whether a security group should be created (it affects all security group related resources under this module) | bool | true | N |
+| security_group_name | The name of the security group resource" | string | "" | N |
+| security_group_description | The description of the security group resource | string | null | N |
+| security_group_rules_configuration | The configuration for security group rule resources to which the security group belongs | list(object) | <pre>[<br>  {<br>    protocol = "icmp"<br>  }<br>]</pre> | N |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| this_vpc_id | The ID of the VPC |
-| this_subnet_ids | The IDs of the Subnets |
-| this_network_ids | The Network IDs of the Subnets |
-
-Authors
-----
-Created and maintained by [Zhenguo Niu](https://github.com/niuzhenguo)
-
-License
-----
-Apache 2 Licensed. See LICENSE for full details.
+| vpc_id | The ID of the VPC resource |
+| vpc_cidr | The CIDR block of the VPC resource |
+| subnet_cidrs | The CIDR list of the subnet resources to which the VPC resource belongs |
+| subnet_ids | The ID list of the subnet resources to which the VPC resource belongs |
+| security_group_id | The ID of the security group resource |
+| security_group_rules | All rules to which the security group resource belongs |
