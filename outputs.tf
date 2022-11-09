@@ -10,12 +10,12 @@ output "vpc_cidr" {
 
 output "subnet_cidrs" {
     description = "The CIDR list of the subnet resources to which the VPC resource belongs"
-    value       = try(huaweicloud_vpc.this[*].cidr, [])
+    value       = try(huaweicloud_vpc_subnet.this[*].cidr, [])
 }
 
 output "subnet_ids" {
     description = "The ID list of the subnet resources to which the VPC resource belongs"
-    value       = try(huaweicloud_vpc.this[*].id, [])
+    value       = try(huaweicloud_vpc_subnet.this[*].id, [])
 }
 
 output "security_group_id" {
