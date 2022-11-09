@@ -49,7 +49,7 @@ quota limits). Run `terraform destroy` when you don't need these resources.
 | vpc_name | The name of the VPC resource | string | module-single-vpc |
 | vpc_cidr_block | The CIDR block of the VPC resource | string | "172.16.0.0/16" |
 | subnets_configuration | The configuration for the subnet resources to which the VPC belongs | list(object) | <pre>[<br>  {<br>    name = "module-single-master-subnet",<br>    cidr = "172.16.66.0/24",<br>  },<br>  {<br>    name = "module-single-standby-subnet",<br>    cidr = "172.16.86.0/24",<br>  },<br>]</pre> |
-| vpc_name | Controls whether a security group should be created (it affects all security group related resources under this module) | bool | false |
+| is_security_group_create | Controls whether a security group should be created (it affects all security group related resources under this module) | bool | false |
 
 ## Outputs
 

@@ -47,5 +47,5 @@ variable "is_security_group_create" {
   description = "Controls whether a security group should be created (it affects all security group related resources under this module)"
 
   type    = bool
-  default = true
+  default = false
 }
