@@ -11,6 +11,10 @@ resource "huaweicloud_vpc" "this" {
   enterprise_project_id = var.enterprise_project_id
 }
 
+data "huaweicloud_vpcs" "this" {
+  count = length(var.query_vpc_names) > 0 ? 1 : 0
+}
+
 ######################################################################
 # All subnets under VPC resource
 ######################################################################
@@ -34,6 +38,10 @@ resource "huaweicloud_vpc_subnet" "this" {
   )
 }
 
+data "huaweicloud_vpc_subnets" "this" {
+  count = length(var.query_subnet_names) > 0 ? 1 : 0
+}
+
 ######################################################################
 # Default security group
 ######################################################################
@@ -46,6 +54,10 @@ resource "huaweicloud_networking_secgroup" "this" {
   delete_default_rules = true
 
   enterprise_project_id = var.enterprise_project_id
+}
+
+data "huaweicloud_networking_secgroups" "this" {
+  count = length(var.query_security_group_names) > 0 ? 1 : 0
 }
 
 ######################################################################

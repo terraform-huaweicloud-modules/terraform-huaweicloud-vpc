@@ -43,6 +43,9 @@ Full contributing [guidelines are covered here](.github/how_to_contribute.md).
 | huaweicloud_networking_secgroup.this | resource |
 | huaweicloud_networking_secgroup_rule.in_v4_self_group | resource |
 | huaweicloud_networking_secgroup_rule.this | resource |
+| data.huaweicloud_vpcs.this | data-source |
+| data.huaweicloud_vpc_subnets.this | data-source |
+| data.huaweicloud_networking_secgroups.this | data-source |
 
 ## Inputs
 
@@ -58,6 +61,9 @@ Full contributing [guidelines are covered here](.github/how_to_contribute.md).
 | security_group_name | The name of the security group resource" | string | "" | N |
 | security_group_description | The description of the security group resource | string | null | N |
 | security_group_rules_configuration | The configuration for security group rule resources to which the security group belongs | list(object) | <pre>[<br>  {<br>    protocol = "icmp"<br>  }<br>]</pre> | N |
+| query_vpc_names | The VPC name list used to query the resource IDs | list(string) | <pre>[]</pre> | N |
+| query_subnet_names | The subnet name list used to query the resource IDs | list(string) | <pre>[]</pre> | N |
+| query_security_group_names | The security group name list used to query the resource IDs | list(string) | <pre>[]</pre> | N |
 
 ## Outputs
 
@@ -69,3 +75,6 @@ Full contributing [guidelines are covered here](.github/how_to_contribute.md).
 | subnet_ids | The ID list of the subnet resources to which the VPC resource belongs |
 | security_group_id | The ID of the security group resource |
 | security_group_rules | All rules to which the security group resource belongs |
+| query_vpc_ids | The ID list of the VPC resources for data-source query by resource name |
+| query_subnet_ids | The ID list of the subnet resources for data-source query by resource name |
+| query_security_group_ids | The ID list of the security group resources for data-source query by resource name |
