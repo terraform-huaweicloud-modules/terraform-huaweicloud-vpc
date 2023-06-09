@@ -1,8 +1,13 @@
 # The Terraform module of HUAWEI Cloud VPC service
 
-The terraform module for one-click deployment of VPC and related resources.
+What capabilities does the current Module provide:
+
+- One-click deployment of VPC and related resources.
+- Use the resource's name to query the resource's ID by data-sources.
 
 ## Usage
+
+### Create a VPC and two subnets, no security group
 
 ```hcl
 module "vpc_service" {
@@ -17,6 +22,18 @@ module "vpc_service" {
   ]
 
   is_security_group_create = false
+}
+```
+
+### Query resource IDs using resource names
+
+```hcl
+module "vpc_service" {
+  source = "terraform-huaweicloud-modules/vpc-service"
+
+  query_vpc_names            = ["module-single-vpc"]
+  query_subnet_names         = ["module-single-master-subnet", "module-single-standby-subnet"]
+  query_security_group_names = ["module-single-security-group"]
 }
 ```
 
