@@ -98,14 +98,16 @@ variable "security_group_rules_configuration" {
   description = "The configuration for security group rule resources to which the security group belongs"
 
   type = list(object({
-    description      = optional(string, null)
-    direction        = optional(string, "ingress")
-    ethertype        = optional(string, "IPv4")
-    protocol         = optional(string, null)
-    ports            = optional(string, null)
-    remote_ip_prefix = optional(string, "0.0.0.0/0")
-    action           = optional(string, "allow")
-    priority         = optional(number, null)
+    description             = optional(string, null)
+    direction               = optional(string, "ingress")
+    ethertype               = optional(string, "IPv4")
+    protocol                = optional(string, null)
+    ports                   = optional(string, null)
+    remote_ip_prefix        = optional(string, "0.0.0.0/0")
+    remote_group_id         = optional(string, null)
+    remote_address_group_id = optional(string, null)
+    action                  = optional(string, "allow")
+    priority                = optional(number, null)
   }))
 
   default = [
@@ -113,6 +115,23 @@ variable "security_group_rules_configuration" {
       protocol = "icmp"
     }
   ]
+}
+
+variable "remote_address_group_rules_configuration" {
+  description = "The configuration of remote address group for security group rule resources"
+
+  type = list(object({
+    description      = optional(string, null)
+    direction        = optional(string, "ingress")
+    ethertype        = optional(string, "IPv4")
+    protocol         = optional(string, null)
+    ports            = optional(string, null)
+    remote_addresses = list(string)
+    action           = optional(string, "allow")
+    priority         = optional(number, null)
+  }))
+
+  default = []
 }
 
 ######################################################################
