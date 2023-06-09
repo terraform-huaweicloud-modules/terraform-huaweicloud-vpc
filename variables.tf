@@ -114,3 +114,28 @@ variable "security_group_rules_configuration" {
     }
   ]
 }
+
+######################################################################
+# Resource name list configuration for data source queries
+######################################################################
+
+variable "query_vpc_names" {
+  description = "The VPC name list used to query the resource IDs"
+
+  type    = list(string)
+  default = []
+}
+
+variable "query_subnet_names" {
+  description = "The subnet name list used to query the resource IDs"
+
+  type    = list(string)
+  default = []
+}
+
+variable "query_security_group_names" {
+  description = "The security group name list used to query the resource IDs"
+
+  type    = list(string)
+  default = []
+}
