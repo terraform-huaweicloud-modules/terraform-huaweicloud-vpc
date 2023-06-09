@@ -6,7 +6,7 @@ variable "vpc_name" {
   description = "The name of the VPC resource"
 
   type    = string
-  default = ""
+  default = "module-single-vpc"
 }
 
 variable "vpc_cidr_block" {
