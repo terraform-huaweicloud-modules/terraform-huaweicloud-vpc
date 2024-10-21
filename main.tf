@@ -83,15 +83,18 @@ resource "huaweicloud_networking_secgroup_rule" "this" {
 
   security_group_id = huaweicloud_networking_secgroup.this[0].id
 
-  description      = lookup(element(var.security_group_rules_configuration, count.index), "description")
-  direction        = lookup(element(var.security_group_rules_configuration, count.index), "direction")
-  ethertype        = lookup(element(var.security_group_rules_configuration, count.index), "ethertype")
-  protocol         = lookup(element(var.security_group_rules_configuration, count.index), "protocol")
-  ports            = lookup(element(var.security_group_rules_configuration, count.index), "ports")
-  remote_ip_prefix = lookup(element(var.security_group_rules_configuration, count.index), "remote_group_id") == null ? lookup(element(var.security_group_rules_configuration, count.index), "remote_ip_prefix") : null
-  remote_group_id  = lookup(element(var.security_group_rules_configuration, count.index), "remote_group_id")
-  action           = lookup(element(var.security_group_rules_configuration, count.index), "action")
-  priority         = lookup(element(var.security_group_rules_configuration, count.index), "priority")
+  description             = lookup(element(var.security_group_rules_configuration, count.index), "description")
+  direction               = lookup(element(var.security_group_rules_configuration, count.index), "direction")
+  ethertype               = lookup(element(var.security_group_rules_configuration, count.index), "ethertype")
+  protocol                = lookup(element(var.security_group_rules_configuration, count.index), "protocol")
+  ports                   = lookup(element(var.security_group_rules_configuration, count.index), "ports")
+  remote_ip_prefix        = lookup(element(var.security_group_rules_configuration, count.index), "remote_group_id") == null && lookup(element(var.security_group_rules_configuration, count.index),
+    "remote_address_group_id") == null ? lookup(element(var.security_group_rules_configuration, count.index), "remote_ip_prefix") : null
+  remote_group_id         = lookup(element(var.security_group_rules_configuration, count.index), "remote_group_id")
+  remote_address_group_id = lookup(element(var.security_group_rules_configuration, count.index), "remote_group_id") != null ? null : lookup(element(var.security_group_rules_configuration, count.index),
+    "remote_address_group_id")
+  action                  = lookup(element(var.security_group_rules_configuration, count.index), "action")
+  priority                = lookup(element(var.security_group_rules_configuration, count.index), "priority")
 }
 
 resource "huaweicloud_vpc_address_group" "this" {
