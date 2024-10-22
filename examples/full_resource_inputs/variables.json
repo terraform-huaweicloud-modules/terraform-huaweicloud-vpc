@@ -1,0 +1,79 @@
+{
+  "enterprise_project_id": "0",
+  "name_suffix": "tf_test_",
+  "is_vpc_create": true,
+  "vpc_name": "demo",
+  "vpc_cidr": "172.16.128.0/20",
+  "vpc_description": "Created by terraform module",
+  "vpc_secondary_cidrs": ["172.16.192.0/20"],
+  "vpc_tags": {
+    "foo": "bar"
+  },
+  "subnets_configuration": [
+    {
+      "name": "demo-master",
+      "description": "Created by terraform module",
+      "cidr": "172.16.136.0/24",
+      "ipv6_enabled": false,
+      "dhcp_enabled": false,
+      "dns_list": ["5.5.5.5"],
+      "tags": {
+        "foo": "bar"
+      },
+      "delete_timeout": "30m"
+    },
+    {
+      "name": "demo-slave",
+      "cidr": "172.16.138.0/24"
+    }
+  ],
+  "is_security_group_create": true,
+  "security_group_name": "demo",
+  "security_group_description": "Created by terraform module",
+  "security_group_rules_configuration": [
+    {
+      "description": "Created by terraform module",
+      "direction": "ingress",
+      "ethertype": "IPv4",
+      "protocol": "icmp",
+      "priority": 100
+    },
+    {
+      "description": "Created by terraform module",
+      "direction": "ingress",
+      "ethertype": "IPv6",
+      "protocol": "icmp",
+      "remote_ip_prefix": "::/0",
+      "priority": 100
+    },
+    {
+      "direction": "egress",
+      "ethertype": "IPv4",
+      "priority": 1
+    },
+    {
+      "direction": "egress",
+      "ethertype": "IPv6",
+      "remote_ip_prefix": "::/0",
+      "priority": 1
+    }
+  ],
+  "remote_address_group_rules_configuration": [
+    {
+      "description": "Created by terraform module",
+      "direction": "ingress",
+      "ethertype": "IPv6",
+      "protocol": "tcp",
+      "ports": "22",
+      "remote_addresses": ["FC00:0:130F:0:0:9C0:876A:130B"],
+      "action": "deny",
+      "priority": 100
+    },
+    {
+      "protocol": "tcp",
+      "ports": "30000",
+      "remote_addresses": ["192.168.128.0"],
+      "priority": 100
+    }
+  ]
+}

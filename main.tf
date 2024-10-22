@@ -5,10 +5,20 @@
 resource "huaweicloud_vpc" "this" {
   count = var.is_vpc_create ? 1 : 0
 
-  name = var.name_suffix != "" ? format("%s-%s", var.vpc_name, var.name_suffix) : var.vpc_name
-  cidr = var.vpc_cidr_block
+  name            = var.name_suffix != "" ? format("%s-%s", var.vpc_name, var.name_suffix) : var.vpc_name
+  cidr            = var.vpc_cidr
+  description     = var.vpc_description
+  secondary_cidrs = var.vpc_secondary_cidrs
+  tags            = var.vpc_tags
 
   enterprise_project_id = var.enterprise_project_id
+  
+  lifecycle {
+    precondition {
+      condition     = var.is_vpc_create && var.vpc_name != ""
+      error_message = "Argument 'vpc_name' is required if the value of argument 'is_vpc_create' is true"
+    }
+  }
 }
 
 data "huaweicloud_vpcs" "this" {
@@ -32,10 +42,7 @@ resource "huaweicloud_vpc_subnet" "this" {
   dhcp_enable = lookup(element(var.subnets_configuration, count.index), "dhcp_enabled")
   dns_list    = lookup(element(var.subnets_configuration, count.index), "dns_list")
 
-  tags = merge(
-    { "Name" = var.name_suffix != "" ? format("%s-%s", lookup(element(var.subnets_configuration, count.index), "name"), var.name_suffix) : lookup(element(var.subnets_configuration, count.index), "name")},
-    lookup(element(var.subnets_configuration, count.index), "tags")
-  )
+  tags = lookup(element(var.subnets_configuration, count.index), "tags")
 }
 
 data "huaweicloud_vpc_subnets" "this" {
@@ -58,6 +65,16 @@ resource "huaweicloud_networking_secgroup" "this" {
 
 data "huaweicloud_networking_secgroups" "this" {
   count = length(var.query_security_group_names) > 0 ? 1 : 0
+}
+
+data "huaweicloud_networking_secgroup_rules" "this" {
+  depends_on = [
+    huaweicloud_networking_secgroup_rule.this
+  ]
+
+  count = var.is_security_group_create ? 1 : 0
+
+  security_group_id = try(huaweicloud_networking_secgroup.this[0].id, null)
 }
 
 ######################################################################
@@ -100,8 +117,9 @@ resource "huaweicloud_networking_secgroup_rule" "this" {
 resource "huaweicloud_vpc_address_group" "this" {
   count = var.is_security_group_create && length(var.remote_address_group_rules_configuration) > 0 ? length(var.remote_address_group_rules_configuration) : 0
 
-  name      = var.name_suffix != "" ? format("%s-address-group-%d", var.name_suffix, count.index) : var.security_group_name
-  addresses = lookup(element(var.remote_address_group_rules_configuration, count.index), "remote_addresses")
+  name       = var.name_suffix != "" ? format("%s-address-group-%d", var.name_suffix, count.index) : var.security_group_name
+  ip_version = try(regexall("\\d+", lookup(element(var.remote_address_group_rules_configuration, count.index), "ethertype"))[0], null)
+  addresses  = lookup(element(var.remote_address_group_rules_configuration, count.index), "remote_addresses")
 }
 
 resource "huaweicloud_networking_secgroup_rule" "remote_address_group" {

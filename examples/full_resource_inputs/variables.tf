@@ -52,11 +52,11 @@ variable "vpc_description" {
   description = "The description of the VPC resource"
 
   type    = string
-  default = ""
+  default = "192.168.0.0/16"
 }
 
 variable "vpc_secondary_cidrs" {
-  description = "The secondary CIDR blocks of the VPC resource"
+  description = "The secondary CIDR block of the VPC resource"
 
   type    = list(string)
   default = []
@@ -153,30 +153,5 @@ variable "remote_address_group_rules_configuration" {
     priority         = optional(number, null)
   }))
 
-  default = []
-}
-
-######################################################################
-# Resource name list configuration for data source queries
-######################################################################
-
-variable "query_vpc_names" {
-  description = "The VPC name list used to query the resource IDs"
-
-  type    = list(string)
-  default = []
-}
-
-variable "query_subnet_names" {
-  description = "The subnet name list used to query the resource IDs"
-
-  type    = list(string)
-  default = []
-}
-
-variable "query_security_group_names" {
-  description = "The security group name list used to query the resource IDs"
-
-  type    = list(string)
   default = []
 }

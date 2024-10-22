@@ -1,0 +1,30 @@
+{
+  "enterprise_project_id": "0",
+  "name_suffix": "tf_test_",
+  "is_vpc_create": true,
+  "vpc_name": "demo",
+  "vpc_cidr": "172.16.128.0/20",
+  "vpc_description": "Created by terraform module",
+  "vpc_secondary_cidrs": ["172.16.192.0/20"],
+  "vpc_tags": {
+    "foo": "bar"
+  },
+  "subnets_configuration": [
+    {
+      "name": "demo-master",
+      "description": "Created by terraform module",
+      "cidr": "172.16.136.0/24",
+      "ipv6_enabled": false,
+      "dhcp_enabled": false,
+      "dns_list": ["5.5.5.5"],
+      "tags": {
+        "foo": "bar"
+      },
+      "delete_timeout": "30m"
+    },
+    {
+      "name": "demo-slave",
+      "cidr": "172.16.138.0/24"
+    }
+  ]
+}
