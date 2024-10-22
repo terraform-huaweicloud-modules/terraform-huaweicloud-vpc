@@ -2,8 +2,8 @@
 
 What capabilities does the current Module provide:
 
-- One-click deployment of VPC and related resources.
-- Use the resource's name to query the resource's ID by data-sources.
++ One-click deployment of VPC and related resources.
++ Use the resource's name to query the resource's ID by data-sources.
 
 ## Usage
 
@@ -17,11 +17,44 @@ module "vpc_service" {
   vpc_cidr_block = "172.16.0.0/16"
 
   subnet_configuration = [
-    {name="module-single-master-subnet", cidr="172.16.66.0/24"},
-    {name="module-single-standby-subnet", cidr="172.16.86.0/24"},
+    {
+      name="module-single-master-subnet",
+      cidr="172.16.66.0/24"
+    },
+    {
+      name="module-single-standby-subnet",
+      cidr="172.16.86.0/24"
+    },
   ]
 
   is_security_group_create = false
+}
+```
+
+### Create a security group and three security group rules (contains a self access rule in security group)
+
+```hcl
+module "vpc_service" {
+  source = "terraform-huaweicloud-modules/vpc-service"
+
+  is_vpc_create = false
+
+  is_security_group_create   = true
+  security_group_name        = "module-single-security-group"
+  security_group_description = "Created by terraform module"
+
+  subnet_configuration = [
+    {
+      description="Created by terraform module",
+      direction="ingress",
+      ethertype="IPv6",
+      protocol="tcp",
+      ports="22",
+      remote_ip_prefix="::/0",
+      action="deny",
+      priority=100,
+    },
+  ]
 }
 ```
 
@@ -65,16 +98,21 @@ Full contributing [guidelines are covered here](.github/how_to_contribute.md).
 | data.huaweicloud_vpcs.this | data-source |
 | data.huaweicloud_vpc_subnets.this | data-source |
 | data.huaweicloud_networking_secgroups.this | data-source |
+| data.huaweicloud_networking_secgroup_rules.this | data-source |
 
 ## Inputs
 
+<!-- markdownlint-disable MD013 -->
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|----------|
 | enterprise_project_id | Used to specify whether the resource is created under the enterprise project (this parameter is only valid for enterprise users) | string | null | N |
 | name_suffix | The suffix string of name for all Network resources | string | "" | N |
 | is_vpc_create | Controls whether a VPC should be created (it affects all VPC related resources under this module) | bool | true | N |
 | vpc_name | The name of the VPC resource | string | "" | N |
-| vpc_cidr_block | The CIDR block of the VPC resource | string | "192.168.0.0/16" | N |
+| vpc_cidr | The CIDR block of the VPC resource | string | "192.168.0.0/16" | N |
+| vpc_description | The description of the VPC resource | string | "" | N |
+| vpc_secondary_cidrs | The secondary CIDR blocks of the VPC resource | list(string) | <pre>[]</pre> | N |
+| vpc_tags | The key/value pairs to associte with the VPC resource | map(string) | <pre>{}</pre> | N |
 | subnets_configuration | The configuration for the subnet resources to which the VPC belongs | <pre>list(object({<br>  name           = string<br>  description    = optional(string, null)<br>  cidr           = string<br>  ipv6_enabled   = optional(bool, true)<br>  dhcp_enabled   = optional(bool, true)<br>  dns_list       = optional(list(string), null)<br>  tags           = optional(map(string), {})<br>  delete_timeout = optional(string, null)<br>}))</pre> | <pre>[<br>  {<br>    name = "module-default-subnet",<br>    cidr = "192.168.16.0/20",<br>  },<br>]</pre> | N |
 | is_security_group_create | Controls whether a security group should be created (it affects all security group related resources under this module) | bool | true | N |
 | security_group_name | The name of the security group resource" | string | "" | N |
@@ -84,6 +122,7 @@ Full contributing [guidelines are covered here](.github/how_to_contribute.md).
 | query_vpc_names | The VPC name list used to query the resource IDs | list(string) | <pre>[]</pre> | N |
 | query_subnet_names | The subnet name list used to query the resource IDs | list(string) | <pre>[]</pre> | N |
 | query_security_group_names | The security group name list used to query the resource IDs | list(string) | <pre>[]</pre> | N |
+<!-- markdownlint-enable MD013 -->
 
 ## Outputs
 
@@ -95,6 +134,6 @@ Full contributing [guidelines are covered here](.github/how_to_contribute.md).
 | subnet_ids | The ID list of the subnet resources to which the VPC resource belongs |
 | security_group_id | The ID of the security group resource |
 | security_group_rules | All rules to which the security group resource belongs |
-| query_vpc_ids | The ID list of the VPC resources for data-source query by resource name |
-| query_subnet_ids | The ID list of the subnet resources for data-source query by resource name |
-| query_security_group_ids | The ID list of the security group resources for data-source query by resource name |
+| queried_vpc_ids | The ID list of the VPC resources for data-source query by resource name |
+| queried_subnet_ids | The ID list of the subnet resources for data-source query by resource name |
+| queried_security_group_ids | The ID list of the security group resources for data-source query by resource name |

@@ -18,10 +18,10 @@ FEATURES:
 The first release version.
 Support the VPC module to manage VPC and related resources:
 
-- VPC
-- Subnet
-- Security group
-- Security group rule
++ VPC
++ Subnet
++ Security group
++ Security group rule
 
 FEATURES:
 

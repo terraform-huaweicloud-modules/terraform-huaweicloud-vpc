@@ -25,20 +25,20 @@ output "security_group_id" {
 
 output "security_group_rules" {
     description = "All rules to which the security group resource belongs"
-    value       = try(huaweicloud_networking_secgroup.this[0].rules, null)
+    value       = try(data.huaweicloud_networking_secgroup_rules.this[0].rules, null)
 }
 
-output "query_vpc_ids" {
+output "queried_vpc_ids" {
     description = "The ID list of the VPC resources for data-source query by resource name"
     value       = [for v in flatten(data.huaweicloud_vpcs.this[*].vpcs): v.id if contains(var.query_vpc_names, v.name)]
 }
 
-output "query_subnet_ids" {
+output "queried_subnet_ids" {
     description = "The ID list of the subnet resources for data-source query by resource name"
     value       = [for v in flatten(data.huaweicloud_vpc_subnets.this[*].subnets): v.id if contains(var.query_subnet_names, v.name)]
 }
 
-output "query_security_group_ids" {
+output "queried_security_group_ids" {
     description = "The ID list of the security group resources for data-source query by resource name"
     value       = [for v in flatten(data.huaweicloud_networking_secgroups.this[*].security_groups): v.id if contains(var.query_security_group_names, v.name)]
 }

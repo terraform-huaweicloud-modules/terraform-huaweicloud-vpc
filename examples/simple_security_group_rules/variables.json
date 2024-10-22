@@ -1,0 +1,26 @@
+{
+  "name_suffix": "tf_test_",
+  "is_security_group_create": true,
+  "security_group_name": "demo",
+  "security_group_description": "Created by terraform module",
+  "security_group_rules_configuration": [
+    {
+      "description": "Created by terraform module",
+      "direction": "ingress",
+      "ethertype": "IPv6",
+      "protocol": "tcp",
+      "ports": "22",
+      "remote_ip_prefix": "::/0",
+      "action": "deny",
+      "priority": 100
+    },
+    {
+      "protocol": "tcp",
+      "ports": "30000",
+      "priority": 100
+    },
+    {
+      "protocol": "icmp"
+    }
+  ]
+}
