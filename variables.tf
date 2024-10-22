@@ -143,14 +143,15 @@ variable "remote_address_group_rules_configuration" {
   description = "The configuration of remote address group for security group rule resources"
 
   type = list(object({
-    description      = optional(string, null)
-    direction        = optional(string, "ingress")
-    ethertype        = optional(string, "IPv4")
-    protocol         = optional(string, null)
-    ports            = optional(string, null)
-    remote_addresses = list(string)
-    action           = optional(string, "allow")
-    priority         = optional(number, null)
+    address_group_name = string
+    description        = optional(string, null)
+    direction          = optional(string, "ingress")
+    ethertype          = optional(string, "IPv4")
+    protocol           = optional(string, null)
+    ports              = optional(string, null)
+    remote_addresses   = list(string)
+    action             = optional(string, "allow")
+    priority           = optional(number, null)
   }))
 
   default = []

@@ -1,6 +1,6 @@
 {
   "enterprise_project_id": "0",
-  "name_suffix": "tf_test_",
+  "name_suffix": "-terraform-module",
   "is_vpc_create": true,
   "vpc_name": "demo",
   "vpc_cidr": "172.16.128.0/20",
