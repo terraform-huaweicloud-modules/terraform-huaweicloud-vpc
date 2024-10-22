@@ -1,5 +1,5 @@
 {
-  "name_suffix": "tf_test_",
+  "name_suffix": "-terraform-module",
   "is_security_group_create": true,
   "security_group_name": "demo",
   "security_group_description": "Created by terraform module",

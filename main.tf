@@ -5,7 +5,7 @@
 resource "huaweicloud_vpc" "this" {
   count = var.is_vpc_create ? 1 : 0
 
-  name            = var.name_suffix != "" ? format("%s-%s", var.vpc_name, var.name_suffix) : var.vpc_name
+  name            = var.name_suffix != "" ? format("%s%s", var.vpc_name, var.name_suffix) : var.vpc_name
   cidr            = var.vpc_cidr
   description     = var.vpc_description
   secondary_cidrs = var.vpc_secondary_cidrs
@@ -34,7 +34,7 @@ resource "huaweicloud_vpc_subnet" "this" {
 
   vpc_id = huaweicloud_vpc.this[0].id
 
-  name        = var.name_suffix != "" ? format("%s-%s", lookup(element(var.subnets_configuration, count.index), "name"), var.name_suffix) : lookup(element(var.subnets_configuration, count.index), "name")
+  name        = var.name_suffix != "" ? format("%s%s", lookup(element(var.subnets_configuration, count.index), "name"), var.name_suffix) : lookup(element(var.subnets_configuration, count.index), "name")
   description = lookup(element(var.subnets_configuration, count.index), "description")
   cidr        = lookup(element(var.subnets_configuration, count.index), "cidr")
   gateway_ip  = cidrhost(lookup(element(var.subnets_configuration, count.index), "cidr"), 1)
@@ -56,7 +56,7 @@ data "huaweicloud_vpc_subnets" "this" {
 resource "huaweicloud_networking_secgroup" "this" {
   count = var.is_security_group_create ? 1 : 0
 
-  name                 = var.name_suffix != "" ? format("%s-secgroup", var.name_suffix) : var.security_group_name
+  name                 = var.name_suffix != "" ? format("%s%s", var.security_group_name, var.name_suffix) : var.security_group_name
   description          = var.security_group_description
   delete_default_rules = true
 
@@ -117,7 +117,8 @@ resource "huaweicloud_networking_secgroup_rule" "this" {
 resource "huaweicloud_vpc_address_group" "this" {
   count = var.is_security_group_create && length(var.remote_address_group_rules_configuration) > 0 ? length(var.remote_address_group_rules_configuration) : 0
 
-  name       = var.name_suffix != "" ? format("%s-address-group-%d", var.name_suffix, count.index) : var.security_group_name
+  name       = var.name_suffix != "" ? format("%s%s", lookup(element(var.remote_address_group_rules_configuration, count.index), "address_group_name"),
+    var.name_suffix) : lookup(element(var.remote_address_group_rules_configuration, count.index), "address_group_name")
   ip_version = try(regexall("\\d+", lookup(element(var.remote_address_group_rules_configuration, count.index), "ethertype"))[0], null)
   addresses  = lookup(element(var.remote_address_group_rules_configuration, count.index), "remote_addresses")
 }

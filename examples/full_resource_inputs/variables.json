@@ -1,6 +1,6 @@
 {
   "enterprise_project_id": "0",
-  "name_suffix": "tf_test_",
+  "name_suffix": "-terraform-module",
   "is_vpc_create": true,
   "vpc_name": "demo",
   "vpc_cidr": "172.16.128.0/20",
@@ -60,6 +60,7 @@
   ],
   "remote_address_group_rules_configuration": [
     {
+      "address_group_name": "demo-full-inputs",
       "description": "Created by terraform module",
       "direction": "ingress",
       "ethertype": "IPv6",
@@ -70,6 +71,7 @@
       "priority": 100
     },
     {
+      "address_group_name": "demo",
       "protocol": "tcp",
       "ports": "30000",
       "remote_addresses": ["192.168.128.0"],

@@ -137,6 +137,9 @@
       "items": {
         "type": "object",
         "properties": {
+          "address_group_name": {
+            "type": "string"
+          },
           "description": {
             "type": "string"
           },
@@ -166,6 +169,7 @@
           }
         },
         "required": [
+          "address_group_name",
           "remote_addresses"
         ]
       }
