@@ -113,7 +113,7 @@ variable "security_group_description" {
   description = "The description of the security group resource"
 
   type    = string
-  default = null
+  default = ""
 }
 
 variable "security_group_rules_configuration" {
@@ -132,11 +132,7 @@ variable "security_group_rules_configuration" {
     priority                = optional(number, null)
   }))
 
-  default = [
-    {
-      protocol = "icmp"
-    }
-  ]
+  default = []
 }
 
 variable "remote_address_group_rules_configuration" {
