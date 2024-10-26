@@ -117,6 +117,9 @@
           "remote_address_group_id": {
             "type": "string"
           },
+          "address_group_name": {
+            "type": "string"
+          },
           "remote_addresses": {
             "type": "array",
             "items": {
@@ -130,48 +133,6 @@
             "type": "number"
           }
         }
-      }
-    },
-    "remote_address_group_rules_configuration": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "address_group_name": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "direction": {
-            "type": "string"
-          },
-          "ethertype": {
-            "type": "string"
-          },
-          "protocol": {
-            "type": "string"
-          },
-          "ports": {
-            "type": "string"
-          },
-          "remote_addresses": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "action": {
-            "type": "string"
-          },
-          "priority": {
-            "type": "number"
-          }
-        },
-        "required": [
-          "address_group_name",
-          "remote_addresses"
-        ]
       }
     },
     "queried_vpc_names": {
