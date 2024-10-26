@@ -56,25 +56,22 @@
       "ethertype": "IPv6",
       "remote_ip_prefix": "::/0",
       "priority": 1
-    }
-  ],
-  "remote_address_group_rules_configuration": [
+    },
     {
-      "address_group_name": "demo-full-inputs",
-      "description": "Created by terraform module",
       "direction": "ingress",
       "ethertype": "IPv6",
       "protocol": "tcp",
       "ports": "22",
+      "address_group_name": "ipv6_address_group",
       "remote_addresses": ["FC00:0:130F:0:0:9C0:876A:130B"],
       "action": "deny",
       "priority": 100
     },
     {
-      "address_group_name": "demo",
       "protocol": "tcp",
       "ports": "30000",
-      "remote_addresses": ["192.168.128.0"],
+      "address_group_name": "ipv4_address_group",
+      "remote_addresses": ["192.168.128.0", "192.168.128.3-192.168.128.99"],
       "priority": 100
     }
   ]

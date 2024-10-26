@@ -12,7 +12,7 @@ resource "huaweicloud_vpc" "this" {
   tags            = var.vpc_tags
 
   enterprise_project_id = var.enterprise_project_id
-  
+
   lifecycle {
     precondition {
       condition     = var.is_vpc_create && var.vpc_name != ""
@@ -30,7 +30,7 @@ data "huaweicloud_vpcs" "this" {
 ######################################################################
 
 resource "huaweicloud_vpc_subnet" "this" {
-  count = var.is_vpc_create && length(var.subnets_configuration) > 0 ? length(var.subnets_configuration) : 0
+  count = var.is_vpc_create ? length(var.subnets_configuration) : 0
 
   vpc_id = huaweicloud_vpc.this[0].id
 
@@ -69,7 +69,9 @@ data "huaweicloud_networking_secgroups" "this" {
 
 data "huaweicloud_networking_secgroup_rules" "this" {
   depends_on = [
-    huaweicloud_networking_secgroup_rule.this
+    huaweicloud_networking_secgroup_rule.in_v4_self_group,
+    huaweicloud_networking_secgroup_rule.this,
+    huaweicloud_networking_secgroup_rule.remote_address_group,
   ]
 
   count = var.is_security_group_create ? 1 : 0
@@ -95,45 +97,51 @@ resource "huaweicloud_networking_secgroup_rule" "in_v4_self_group" {
 # Custom Security Group Rules
 ######################################################################
 
+locals {
+  security_group_rules_without_remote_addresses = [for o in var.security_group_rules_configuration: o if length(lookup(o, "remote_addresses")) < 1]
+  security_group_rules_with_remote_addresses    = [for o in var.security_group_rules_configuration: o if length(lookup(o, "remote_addresses")) > 0]
+}
+
 resource "huaweicloud_networking_secgroup_rule" "this" {
-  count = var.is_security_group_create && length(var.security_group_rules_configuration) > 0 ? length(var.security_group_rules_configuration) : 0
+  count = var.is_security_group_create ? length(local.security_group_rules_without_remote_addresses) : 0
 
   security_group_id = huaweicloud_networking_secgroup.this[0].id
 
-  description             = lookup(element(var.security_group_rules_configuration, count.index), "description")
-  direction               = lookup(element(var.security_group_rules_configuration, count.index), "direction")
-  ethertype               = lookup(element(var.security_group_rules_configuration, count.index), "ethertype")
-  protocol                = lookup(element(var.security_group_rules_configuration, count.index), "protocol")
-  ports                   = lookup(element(var.security_group_rules_configuration, count.index), "ports")
-  remote_ip_prefix        = lookup(element(var.security_group_rules_configuration, count.index), "remote_group_id") == null && lookup(element(var.security_group_rules_configuration, count.index),
-    "remote_address_group_id") == null ? lookup(element(var.security_group_rules_configuration, count.index), "remote_ip_prefix") : null
-  remote_group_id         = lookup(element(var.security_group_rules_configuration, count.index), "remote_group_id")
-  remote_address_group_id = lookup(element(var.security_group_rules_configuration, count.index), "remote_group_id") != null ? null : lookup(element(var.security_group_rules_configuration, count.index),
-    "remote_address_group_id")
-  action                  = lookup(element(var.security_group_rules_configuration, count.index), "action")
-  priority                = lookup(element(var.security_group_rules_configuration, count.index), "priority")
+  description             = lookup(element(local.security_group_rules_without_remote_addresses, count.index), "description")
+  direction               = lookup(element(local.security_group_rules_without_remote_addresses, count.index), "direction")
+  ethertype               = lookup(element(local.security_group_rules_without_remote_addresses, count.index), "ethertype")
+  protocol                = lookup(element(local.security_group_rules_without_remote_addresses, count.index), "protocol")
+  ports                   = lookup(element(local.security_group_rules_without_remote_addresses, count.index), "ports")
+  remote_ip_prefix        = lookup(element(local.security_group_rules_without_remote_addresses, count.index),
+    "remote_group_id") == null && lookup(element(local.security_group_rules_without_remote_addresses, count.index),
+    "remote_address_group_id") == null ? lookup(element(local.security_group_rules_without_remote_addresses, count.index), "remote_ip_prefix") : null
+  remote_group_id         = lookup(element(local.security_group_rules_without_remote_addresses, count.index), "remote_group_id")
+  remote_address_group_id = lookup(element(local.security_group_rules_without_remote_addresses, count.index),
+    "remote_group_id") != null ? null : lookup(element(local.security_group_rules_without_remote_addresses, count.index), "remote_address_group_id")
+  action                  = lookup(element(local.security_group_rules_without_remote_addresses, count.index), "action")
+  priority                = lookup(element(local.security_group_rules_without_remote_addresses, count.index), "priority")
 }
 
-resource "huaweicloud_vpc_address_group" "this" {
-  count = var.is_security_group_create && length(var.remote_address_group_rules_configuration) > 0 ? length(var.remote_address_group_rules_configuration) : 0
+resource "huaweicloud_vpc_address_group" "security_group_rules_auto_created" {
+  count = var.is_security_group_create ? length(local.security_group_rules_with_remote_addresses) : 0
 
-  name       = var.name_suffix != "" ? format("%s%s", lookup(element(var.remote_address_group_rules_configuration, count.index), "address_group_name"),
-    var.name_suffix) : lookup(element(var.remote_address_group_rules_configuration, count.index), "address_group_name")
-  ip_version = try(regexall("\\d+", lookup(element(var.remote_address_group_rules_configuration, count.index), "ethertype"))[0], null)
-  addresses  = lookup(element(var.remote_address_group_rules_configuration, count.index), "remote_addresses")
+  name       = var.name_suffix != "" ? format("%s%s", lookup(element(local.security_group_rules_with_remote_addresses, count.index), "address_group_name"),
+    var.name_suffix) : lookup(element(local.security_group_rules_with_remote_addresses, count.index), "address_group_name")
+  ip_version = try(regexall("\\d+", lookup(element(local.security_group_rules_with_remote_addresses, count.index), "ethertype"))[0], null)
+  addresses  = lookup(element(local.security_group_rules_with_remote_addresses, count.index), "remote_addresses")
 }
 
 resource "huaweicloud_networking_secgroup_rule" "remote_address_group" {
-  count = var.is_security_group_create && length(var.remote_address_group_rules_configuration) > 0 ? length(var.remote_address_group_rules_configuration) : 0
+  count = var.is_security_group_create ? length(local.security_group_rules_with_remote_addresses) : 0
 
   security_group_id = huaweicloud_networking_secgroup.this[0].id
 
-  description             = lookup(element(var.remote_address_group_rules_configuration, count.index), "description")
-  direction               = lookup(element(var.remote_address_group_rules_configuration, count.index), "direction")
-  ethertype               = lookup(element(var.remote_address_group_rules_configuration, count.index), "ethertype")
-  protocol                = lookup(element(var.remote_address_group_rules_configuration, count.index), "protocol")
-  ports                   = lookup(element(var.remote_address_group_rules_configuration, count.index), "ports")
+  description             = lookup(element(local.security_group_rules_with_remote_addresses, count.index), "description")
+  direction               = lookup(element(local.security_group_rules_with_remote_addresses, count.index), "direction")
+  ethertype               = lookup(element(local.security_group_rules_with_remote_addresses, count.index), "ethertype")
+  protocol                = lookup(element(local.security_group_rules_with_remote_addresses, count.index), "protocol")
+  ports                   = lookup(element(local.security_group_rules_with_remote_addresses, count.index), "ports")
   remote_address_group_id = huaweicloud_vpc_address_group.this[count.index].id
-  action                  = lookup(element(var.remote_address_group_rules_configuration, count.index), "action")
-  priority                = lookup(element(var.remote_address_group_rules_configuration, count.index), "priority")
+  action                  = lookup(element(local.security_group_rules_with_remote_addresses, count.index), "action")
+  priority                = lookup(element(local.security_group_rules_with_remote_addresses, count.index), "priority")
 }
