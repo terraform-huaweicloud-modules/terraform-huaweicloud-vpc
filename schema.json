@@ -130,7 +130,7 @@
             "type": "string"
           },
           "priority": {
-            "type": "number"
+            "type": "integer"
           }
         }
       }
