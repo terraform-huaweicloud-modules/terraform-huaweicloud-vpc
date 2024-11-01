@@ -141,7 +141,7 @@ resource "huaweicloud_networking_secgroup_rule" "remote_address_group" {
   ethertype               = lookup(element(local.security_group_rules_with_remote_addresses, count.index), "ethertype")
   protocol                = lookup(element(local.security_group_rules_with_remote_addresses, count.index), "protocol")
   ports                   = lookup(element(local.security_group_rules_with_remote_addresses, count.index), "ports")
-  remote_address_group_id = huaweicloud_vpc_address_group.this[count.index].id
+  remote_address_group_id = huaweicloud_vpc_address_group.security_group_rules_auto_created[count.index].id
   action                  = lookup(element(local.security_group_rules_with_remote_addresses, count.index), "action")
   priority                = lookup(element(local.security_group_rules_with_remote_addresses, count.index), "priority")
 }
