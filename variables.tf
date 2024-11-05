@@ -1,23 +1,9 @@
 ######################################################################
-# Configuration of Enterprise Project
+# Public configurations
 ######################################################################
 
 variable "enterprise_project_id" {
   description = "Used to specify whether the resource is created under the enterprise project (this parameter is only valid for enterprise users)"
-
-  type     = string
-  default  = null
-  nullable = true
-}
-
-######################################################################
-# Public configurations
-######################################################################
-
-# Specifies the suffix name for network resources, if omitted, using vpc_name, subnet_name, security_group_name to
-# create network resources.
-variable "name_suffix" {
-  description = "The suffix string of name for all Network resources"
 
   type    = string
   default = ""
@@ -30,8 +16,9 @@ variable "name_suffix" {
 variable "is_vpc_create" {
   description = "Controls whether a VPC should be created (it affects all VPC related resources under this module)"
 
-  type    = bool
-  default = true
+  type     = bool
+  default  = true
+  nullable = false
 }
 
 variable "vpc_name" {
@@ -45,7 +32,7 @@ variable "vpc_cidr" {
   description = "The CIDR block of the VPC resource"
 
   type    = string
-  default = "192.168.0.0/16"
+  default = ""
 }
 
 variable "vpc_description" {
@@ -58,15 +45,17 @@ variable "vpc_description" {
 variable "vpc_secondary_cidrs" {
   description = "The secondary CIDR blocks of the VPC resource"
 
-  type    = list(string)
-  default = []
+  type     = list(string)
+  default  = []
+  nullable = false
 }
 
 variable "vpc_tags" {
   description = "The key/value pairs to associte with the VPC resource"
 
-  type    = map(string)
-  default = {}
+  type     = map(string)
+  default  = {}
+  nullable = false
 }
 
 variable "subnets_configuration" {
@@ -74,21 +63,16 @@ variable "subnets_configuration" {
 
   type = list(object({
     name         = string
-    description  = optional(string, null)
     cidr         = string
-    ipv6_enabled = optional(bool, true)
-    dhcp_enabled = optional(bool, true)
-    dns_list     = optional(list(string), null)
+    gateway_ip   = optional(string, "")
+    description  = optional(string, "")
+    ipv6_enabled = optional(bool, null)
+    dhcp_enabled = optional(bool, null)
+    dns_list     = optional(list(string), [])
     tags         = optional(map(string), {})
-    delete_timeout = optional(string, null)
   }))
-
-  default = [
-    {
-      name = "module-default-subnet"
-      cidr = "192.168.16.0/20"
-    }
-  ]
+  default  = []
+  nullable = false
 }
 
 ######################################################################
@@ -98,8 +82,9 @@ variable "subnets_configuration" {
 variable "is_security_group_create" {
   description = "Controls whether a security group should be created (it affects all security group related resources under this module)"
 
-  type    = bool
-  default = true
+  type     = bool
+  default  = true
+  nullable = false
 }
 
 variable "security_group_name" {
@@ -120,21 +105,21 @@ variable "security_group_rules_configuration" {
   description = "The configuration for security group rule resources to which the security group belongs"
 
   type = list(object({
-    description             = optional(string, null)
+    description             = optional(string, "")
     direction               = optional(string, "ingress")
     ethertype               = optional(string, "IPv4")
-    protocol                = optional(string, null)
-    ports                   = optional(string, null)
+    protocol                = optional(string, "")
+    ports                   = optional(string, "")
     remote_ip_prefix        = optional(string, "0.0.0.0/0")
-    remote_group_id         = optional(string, null)
-    remote_address_group_id = optional(string, null)
-    address_group_name      = optional(string, null)
+    remote_group_id         = optional(string, "")
+    remote_address_group_id = optional(string, "")
+    address_group_name      = optional(string, "")
     remote_addresses        = optional(list(string), [])
     action                  = optional(string, "allow")
-    priority                = optional(number, null)
+    priority                = optional(number, 0)
   }))
-
-  default = []
+  default  = []
+  nullable = false
 }
 
 #################################################################
@@ -144,20 +129,23 @@ variable "security_group_rules_configuration" {
 variable "query_vpc_names" {
   description = "The VPC name list used to query the resource IDs"
 
-  type    = list(string)
-  default = []
+  type     = list(string)
+  default  = []
+  nullable = false
 }
 
 variable "query_subnet_names" {
   description = "The subnet name list used to query the resource IDs"
 
-  type    = list(string)
-  default = []
+  type     = list(string)
+  default  = []
+  nullable = false
 }
 
 variable "query_security_group_names" {
   description = "The security group name list used to query the resource IDs"
 
-  type    = list(string)
-  default = []
+  type     = list(string)
+  default  = []
+  nullable = false
 }
