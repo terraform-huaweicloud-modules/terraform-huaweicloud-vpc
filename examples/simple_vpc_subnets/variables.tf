@@ -1,26 +1,11 @@
 ######################################################################
-# Configuration of Enterprise Project
+# Public configurations
 ######################################################################
 
 variable "enterprise_project_id" {
   description = "Used to specify whether the resource is created under the enterprise project (this parameter is only valid for enterprise users)"
 
-  type     = string
-  default  = null
-  nullable = true
-}
-
-######################################################################
-# Public configurations
-######################################################################
-
-# Specifies the suffix name for network resources, if omitted, using vpc_name, subnet_name, security_group_name to
-# create network resources.
-variable "name_suffix" {
-  description = "The suffix string of name for all Network resources"
-
-  type    = string
-  default = ""
+  type = string
 }
 
 ######################################################################
@@ -30,36 +15,31 @@ variable "name_suffix" {
 variable "vpc_name" {
   description = "The name of the VPC resource"
 
-  type    = string
-  default = ""
+  type = string
 }
 
 variable "vpc_cidr" {
   description = "The CIDR block of the VPC resource"
 
-  type    = string
-  default = "192.168.0.0/16"
+  type = string
 }
 
 variable "vpc_description" {
   description = "The description of the VPC resource"
 
-  type    = string
-  default = "192.168.0.0/16"
+  type = string
 }
 
 variable "vpc_secondary_cidrs" {
   description = "The secondary CIDR block of the VPC resource"
 
-  type    = list(string)
-  default = []
+  type = list(string)
 }
 
 variable "vpc_tags" {
   description = "The key/value pairs to associte with the VPC resource"
 
-  type    = map(string)
-  default = {}
+  type = map(string)
 }
 
 variable "subnets_configuration" {
@@ -75,11 +55,4 @@ variable "subnets_configuration" {
     tags         = optional(map(string), {})
     delete_timeout = optional(string, null)
   }))
-
-  default = [
-    {
-      name = "module-default-subnet"
-      cidr = "192.168.16.0/20"
-    }
-  ]
 }
