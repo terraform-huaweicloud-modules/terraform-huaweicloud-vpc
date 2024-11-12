@@ -9,6 +9,13 @@ variable "enterprise_project_id" {
   default = ""
 }
 
+variable "availability_zone" {
+  description = "The availability zone to which the VPC subnet resource belongs"
+
+  type    = string
+  default = ""
+}
+
 ######################################################################
 # Configuration of VPC resource and related resources
 ######################################################################

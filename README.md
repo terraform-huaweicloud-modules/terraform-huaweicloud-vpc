@@ -106,6 +106,7 @@ Full contributing [guidelines are covered here](.github/how_to_contribute.md).
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|----------|
 | enterprise_project_id | Used to specify whether the resource is created under the enterprise project (this parameter is only valid for enterprise users) | string | "" | N |
+| availability_zone | The availability zone to which the VPC subnet resource belongs | string | "" | N |
 | is_vpc_create | Controls whether a VPC should be created (it affects all VPC related resources under this module) | bool | true | N |
 | vpc_name | The name of the VPC resource | string | "" | Y (Unless is_vpc_create is specified as false) |
 | vpc_cidr | The CIDR block of the VPC resource | string | "192.168.0.0/16" | N |

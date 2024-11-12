@@ -8,6 +8,12 @@
 				"null"
 			]
 		},
+		"availability_zone": {
+			"type": [
+				"string",
+				"null"
+			]
+		},
 		"name_suffix": {
 			"type": [
 				"string",
