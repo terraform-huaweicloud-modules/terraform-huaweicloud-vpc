@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "vpc_id": {
+      "type": "string"
+    },
+    "vpc_cidr": {
+      "type": "string"
+    },
+    "subnet_cidrs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "subnet_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "security_group_id": {
+      "type": "string"
+    },
+    "security_group_rules": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "queried_vpc_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "queried_subnet_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "queried_security_group_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false
+}
