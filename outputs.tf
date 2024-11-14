@@ -25,7 +25,7 @@ output "security_group_id" {
 
 output "security_group_rules" {
     description = "All rules to which the security group resource belongs"
-    value       = try(data.huaweicloud_networking_secgroup_rules.this[0].rules, null)
+    value       = try(data.huaweicloud_networking_secgroup_rules.this[*].rules, [])
 }
 
 output "queried_vpc_ids" {
