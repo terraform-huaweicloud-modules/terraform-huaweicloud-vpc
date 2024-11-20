@@ -2,9 +2,7 @@ module "vpc_service" {
   source = "../.."
 
   enterprise_project_id = var.enterprise_project_id
-  name_suffix           = var.name_suffix
 
-  is_vpc_create         = true
   vpc_name              = var.vpc_name
   vpc_cidr              = var.vpc_cidr
   vpc_description       = var.vpc_description

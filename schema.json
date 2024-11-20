@@ -1,158 +1,191 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "type": "object",
-  "properties": {
-    "enterprise_project_id": {
-      "type": [
-        "string",
-        "null"
-      ]
-    },
-    "name_suffix": {
-      "type": "string"
-    },
-    "is_vpc_create": {
-      "type": "boolean"
-    },
-    "vpc_name": {
-      "type": "string"
-    },
-    "vpc_cidr": {
-      "type": "string"
-    },
-    "vpc_description": {
-      "type": "string"
-    },
-    "vpc_secondary_cidrs": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
-    },
-    "vpc_tags": {
-      "type": "object",
-      "properties": {},
-      "additionalProperties": {
-        "type": "string"
-      }
-    },
-    "subnets_configuration": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "cidr": {
-            "type": "string"
-          },
-          "ipv6_enabled": {
-            "type": "boolean"
-          },
-          "dhcp_enabled": {
-            "type": "boolean"
-          },
-          "dns_list": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "tags": {
-            "type": "object",
-            "properties": {},
-            "additionalProperties": {
-              "type": "string"
-            }
-          },
-          "delete_timeout": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "name",
-          "cidr"
-        ]
-      }
-    },
-    "is_security_group_create": {
-      "type": "boolean"
-    },
-    "security_group_name": {
-      "type": "string"
-    },
-    "security_group_description": {
-      "type": "string"
-    },
-    "security_group_rules_configuration": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "description": {
-            "type": "string"
-          },
-          "direction": {
-            "type": "string"
-          },
-          "ethertype": {
-            "type": "string"
-          },
-          "protocol": {
-            "type": "string"
-          },
-          "ports": {
-            "type": "string"
-          },
-          "remote_ip_prefix": {
-            "type": "string"
-          },
-          "remote_group_id": {
-            "type": "string"
-          },
-          "remote_address_group_id": {
-            "type": "string"
-          },
-          "address_group_name": {
-            "type": "string"
-          },
-          "remote_addresses": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "action": {
-            "type": "string"
-          },
-          "priority": {
-            "type": "integer"
-          }
-        }
-      }
-    },
-    "queried_vpc_names": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
-    },
-    "queried_subnet_names": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
-    },
-    "query_security_group_names": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
-    }
-  },
-  "additionalProperties": false
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"type": "object",
+	"properties": {
+		"enterprise_project_id": {
+			"type": [
+				"string",
+				"null"
+			]
+		},
+		"availability_zone": {
+			"type": [
+				"string",
+				"null"
+			]
+		},
+		"name_suffix": {
+			"type": [
+				"string",
+				"null"
+			]
+		},
+		"is_vpc_create": {
+			"type": "boolean"
+		},
+		"vpc_name": {
+			"type": [
+				"string",
+				"null"
+			]
+		},
+		"vpc_cidr": {
+			"type": [
+				"string",
+				"null"
+			]
+		},
+		"vpc_description": {
+			"type": [
+				"string",
+				"null"
+			]
+		},
+		"vpc_secondary_cidrs": {
+			"type": "array",
+			"items": {
+				"type": "string"
+			}
+		},
+		"vpc_tags": {
+			"type": "object",
+			"properties": {},
+			"additionalProperties": {
+				"type": "string"
+			}
+		},
+		"subnets_configuration": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"name": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+					},
+					"description": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+					},
+					"cidr": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+					},
+					"ipv6_enabled": {
+                        "type": [
+                            "boolean",
+                            "null"
+                        ]
+					},
+					"dhcp_enabled": {
+                        "type": [
+                            "boolean",
+                            "null"
+                        ]
+					},
+					"dns_list": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					},
+					"tags": {
+						"type": "object",
+						"properties": {},
+						"additionalProperties": {
+							"type": "string"
+						}
+					},
+					"delete_timeout": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name",
+					"cidr"
+				]
+			}
+		},
+		"is_security_group_create": {
+			"type": "boolean"
+		},
+		"security_group_name": {
+			"type": "string"
+		},
+		"security_group_description": {
+			"type": "string"
+		},
+		"security_group_rules_configuration": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"description": {
+						"type": "string"
+					},
+					"direction": {
+						"type": "string"
+					},
+					"ethertype": {
+						"type": "string"
+					},
+					"protocol": {
+						"type": "string"
+					},
+					"ports": {
+						"type": "string"
+					},
+					"remote_ip_prefix": {
+						"type": "string"
+					},
+					"remote_group_id": {
+						"type": "string"
+					},
+					"remote_address_group_id": {
+						"type": "string"
+					},
+					"address_group_name": {
+						"type": "string"
+					},
+					"remote_addresses": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					},
+					"action": {
+						"type": "string"
+					},
+					"priority": {
+						"type": "integer"
+					}
+				}
+			}
+		},
+		"queried_vpc_names": {
+			"type": "array",
+			"items": {
+				"type": "string"
+			}
+		},
+		"queried_subnet_names": {
+			"type": "array",
+			"items": {
+				"type": "string"
+			}
+		},
+		"query_security_group_names": {
+			"type": "array",
+			"items": {
+				"type": "string"
+			}
+		}
+	},
+	"additionalProperties": false
 }

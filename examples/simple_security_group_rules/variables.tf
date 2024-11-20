@@ -1,26 +1,11 @@
 ######################################################################
-# Configuration of Enterprise Project
+# Public configurations
 ######################################################################
 
 variable "enterprise_project_id" {
   description = "Used to specify whether the resource is created under the enterprise project (this parameter is only valid for enterprise users)"
 
-  type     = string
-  default  = null
-  nullable = true
-}
-
-######################################################################
-# Public configurations
-######################################################################
-
-# Specifies the suffix name for network resources, if omitted, using vpc_name, subnet_name, security_group_name to
-# create network resources.
-variable "name_suffix" {
-  description = "The suffix string of name for all Network resources"
-
-  type    = string
-  default = ""
+  type = string
 }
 
 ######################################################################
@@ -36,23 +21,22 @@ variable "security_group_name" {
 variable "security_group_description" {
   description = "The description of the security group resource"
 
-  type    = string
-  default = ""
+  type = string
 }
 
 variable "security_group_rules_configuration" {
   description = "The configuration for security group rule resources to which the security group belongs"
 
   type = list(object({
-    description             = optional(string, null)
+    description             = optional(string, "")
     direction               = optional(string, "ingress")
     ethertype               = optional(string, "IPv4")
-    protocol                = optional(string, null)
-    ports                   = optional(string, null)
+    protocol                = optional(string, "")
+    ports                   = optional(string, "")
     remote_ip_prefix        = optional(string, "0.0.0.0/0")
-    remote_group_id         = optional(string, null)
-    remote_address_group_id = optional(string, null)
+    remote_group_id         = optional(string, "")
+    remote_address_group_id = optional(string, "")
     action                  = optional(string, "allow")
-    priority                = optional(number, null)
+    priority                = optional(number, 0)
   }))
 }
