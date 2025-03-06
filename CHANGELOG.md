@@ -1,4 +1,22 @@
 <!-- markdownlint-disable MD041 -->
+## 1.2.0
+
+Adjust the resource examples and supports more scenes.
+Fix resource (also includes variable and output) coding with wrong format or some definitions are missing.
+
+FEATURES:
+
+<!-- markdownlint-disable MD013 -->
++ **Examples adjustment:** More examples are supported ([#16](https://github.com/terraform-huaweicloud-modules/terraform-huaweicloud-vpc/pull/16))
+<!-- markdownlint-enable MD013 -->
+
+FIXED:
+
+<!-- markdownlint-disable MD013 -->
++ **Missing reference:** Supplement the missing reference of the parameter 'remote_address_group_id' for the security group rule resource ([#15](https://github.com/terraform-huaweicloud-modules/terraform-huaweicloud-vpc/pull/15))
++ **Missing variable:** Supplement the variable definition of the parameter 'availability_zones' ([#23](https://github.com/terraform-huaweicloud-modules/terraform-huaweicloud-vpc/pull/23))
+<!-- markdownlint-enable MD013 -->
+
 ## 1.1.0
 
 Supporting security group rules creation for remote group and remote address group.
